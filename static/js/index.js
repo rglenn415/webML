@@ -1,11 +1,10 @@
-function postCSV(){
-  http
-};
-
 function parseFeatures(files){
     //selects the first file
     //possible to send many files, but for now we will only use one
-    var selectedFile = files[0];
+    var data = Papa.parse(files[0],{
+        complete: function(results){
+            console.log('finished',results.data);
+        }
+    });
     console.log('in parseFeatures');
-    
 };
