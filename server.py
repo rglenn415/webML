@@ -5,7 +5,6 @@ from flask import (
 
 app = Flask(__name__, template_folder = "./views")
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
