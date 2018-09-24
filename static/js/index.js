@@ -3,8 +3,8 @@ function parseFeatures(files){
     //possible to send many files, but for now we will only use one
     var data = Papa.parse(files[0],{
         complete: function(results){
-            console.log('finished',results.data[0]);
-            //return results.data[0]
+            console.log('finished', results.data[0]);
+
         }
     });
     console.log('in parseFeatures');
