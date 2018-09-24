@@ -4,7 +4,7 @@ function parseFeatures(files){
     var data = Papa.parse(files[0],{
         complete: function(results){
             console.log('finished',results.data[0]);
-            //return results.data[0]
+            return results.data[0]
         }
     });
     console.log('in parseFeatures');
