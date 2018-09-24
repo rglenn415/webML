@@ -5,9 +5,15 @@ function parseFeatures(files){
         complete: function(results){
 
             console.log('finished',results.data[0]);
-            return results.data[0]
-
+            // return results.data[0];
+            document.getElementById('featureSelect').style.visibility = 'visible';
+            results.data[0].forEach(function(feature){
+                //create element -> set element to user given feature->append element to html
+                var option = document.createElement("option");
+                option.innerHTML = feature;
+                document.getElementById("featureSelect").appendChild(option);
+            });
         }
     });
-    console.log('in parseFeatures');
+
 };

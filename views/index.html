@@ -8,7 +8,7 @@
   <meta name="description" content="webML">
   <meta name="author" content="Nick and Ryan">
 
-  <link rel="stylesheet" href="">
+  <link rel="stylesheet" href="./static/css/style.css">
 
   <script type="text/javascript" src="./static/js/papaparse.min.js"></script>
   <script type="text/javascript" src="./static/js/index.js"></script>
@@ -18,8 +18,10 @@
 This is where file upload goes
 <input value="Upload CSV" type="file" id="input" onchange="parseFeatures(this.files)">
 
+<select id="featureSelect">
+</select>
 
-
+<button id="modelButton">Send it!</button>
 
 
 
