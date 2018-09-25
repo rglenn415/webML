@@ -9,22 +9,43 @@ from sklearn import model_selection
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_predict
+from sklearn.model_selection import cross_val_score
 import sys
+import pandas as pd
 
-def model(userData):
-    #print(userData['file'], file=sys.stdout)
-    
-    train, test = train_test_split(userData['file'], test_size=.2)
-    print(len(train),len(test), file=sys.stdout)
-    #split
-        #extract target feature from userdata
-        #extract csv from userdata
-        #train test split userdata
-        #remove feature from train and test into lists
-    #train
-        #create model
-        #train model with train data
+def create_model(userData):
+    #pop the column headers
+    headers = userData['file'].pop(0)
+
+    selectedFeature = userData['selectedFeature']
+    df = pd.DataFrame(userData['file'],columns=headers)
+
+    #preprocessing
+    target = df[selectedFeature]
+    #drops the selected COLUMN feature from user input
+    features = df.drop(selectedFeature, axis =1)
+    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=.2, random_state=7)
+
+
+    #create and train model
+    model = LogisticRegression()
+    model.fit(X_train,y_train)
+
+
+
+    accuracy_results = cross_val_score(model, features, target, scoring='accuracy')
+    print(f'Accuracy: {round(accuracy_results.mean()*100,1)}%')
+    y_pred = cross_val_predict(model,features,target)
+    c_matrix = confusion_matrix(target,y_pred)
+    print(f'Confusion Matrix:\n {c_matrix}')
+    c_report = classification_report(target,y_pred,target_names=headers)
+    print(f'Classificaiton Report:\n{c_report}')
+
+
+
+
     #reporting
         #test with train data
             #confusion matrix
             #accuracy report
+
