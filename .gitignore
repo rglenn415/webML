@@ -3,3 +3,5 @@ __pycache__
 Scripts
 Lib
 Include 
+pyvenv.cfg
+pip-selfcheck.json
