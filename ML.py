@@ -14,6 +14,9 @@ import sys
 import pandas as pd
 
 def create_model(userData):
+    #save csv file with headers still on it for later use
+    csv = userData['file']
+
     #pop the column headers
     headers = userData['file'].pop(0)
 
@@ -34,12 +37,17 @@ def create_model(userData):
 
 
     accuracy_results = cross_val_score(model, features, target, scoring='accuracy')
-    print(f'Accuracy: {round(accuracy_results.mean()*100,1)}%')
+    acc = accuracy_results.mean()
+    print(f'Accuracy: {round(acc*100,1)}%')
     y_pred = cross_val_predict(model,features,target)
     c_matrix = confusion_matrix(target,y_pred)
     print(f'Confusion Matrix:\n {c_matrix}')
     c_report = classification_report(target,y_pred,target_names=headers)
     print(f'Classificaiton Report:\n{c_report}')
+
+    #encode csv and model with pickle
+
+    data = {'model':,'csv':,'accuracy':acc,'confusion':c_matrix,'classifcation',c_report}
 
 
 
