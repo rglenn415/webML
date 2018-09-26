@@ -12,6 +12,9 @@ from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import cross_val_score
 import sys
 import pandas as pd
+import pickle as pkl
+from bson.binary import Binary
+import pymongo
 
 def create_model(userData):
     #save csv file with headers still on it for later use
@@ -35,25 +38,45 @@ def create_model(userData):
     model.fit(X_train,y_train)
 
 
-
     accuracy_results = cross_val_score(model, features, target, scoring='accuracy')
     acc = accuracy_results.mean()
-    print(f'Accuracy: {round(acc*100,1)}%')
+    #print(f'Accuracy: {round(acc*100,1)}%')
     y_pred = cross_val_predict(model,features,target)
     c_matrix = confusion_matrix(target,y_pred)
-    print(f'Confusion Matrix:\n {c_matrix}')
+    #print(f'Confusion Matrix:\n {c_matrix}')
     c_report = classification_report(target,y_pred,target_names=headers)
-    print(f'Classificaiton Report:\n{c_report}')
-
-    #encode csv and model with pickle
-
-    data = {'model':,'csv':,'accuracy':acc,'confusion':c_matrix,'classifcation',c_report}
+    #print(f'Classificaiton Report:\n{c_report}')
 
 
+    encoded_list = encode([model,csv,acc,c_matrix.tolist(),c_report])
+
+    #open mongodb connection
+    myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+    #refrence the webML database
+    mydb = myclient['webML']
+    #refrence the runs collection inside webML
+    mycol =  mydb['runs']
 
 
-    #reporting
-        #test with train data
-            #confusion matrix
-            #accuracy report
+    #define the data
+    encoded_data = {'model':encoded_list[0],'csv':encoded_list[1],'accuracy':encoded_list[2],'confusion':encoded_list[3],'classifcation':encoded_list[4]}
+    reporting_data = {'accuracy':acc,'confusion':c_matrix,'classifcation':c_report}
+
+
+
+    #insert the data into the runs collection
+    mycol.insert_one(encoded_data)
+
+    #return reporting_data
+
+def encode(unencoded_list):
+    encoded_list = []
+    for item in unencoded_list:
+        #first dumps pickle and then encodes in binary
+        item_pkl = Binary(pkl.dumps(item))
+        encoded_list.append(item_pkl)
+    return encoded_list
+
+
+
 

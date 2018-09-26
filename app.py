@@ -12,8 +12,7 @@ def index():
 @app.route('/postData', methods=['POST'])
 def process_data():
     print(request.json['selectedFeature'], file=sys.stdout)
-    create_model(request.json)
-    return jsonify({})
+    return jsonify(create_model(request.json))
 
 if __name__ == '__main__':
     app.run(debug = True)
