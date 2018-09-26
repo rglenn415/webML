@@ -2,32 +2,34 @@
 
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-
-  <title>webML</title>
-  <meta name="description" content="webML">
-  <meta name="author" content="Nick and Ryan">
-
-  <link rel="stylesheet" href="./static/css/style.css">
-
-  <script type="text/javascript" src="./static/js/papaparse.min.js"></script>
-  <script type="text/javascript" src="./static/js/index.js"></script>
+	<meta charset="utf-8">
+	<title>webML</title>
+	<meta name="description" content="webML">
+	<meta name="author" content="Nick and Ryan">
+	<link rel="stylesheet" href="./static/css/style.css">
+	<script type="text/javascript" src="./static/js/papaparse.min.js"></script>
+	<script type="text/javascript" src="./static/js/index.js"></script>
 </head>
-
 <body>
-This is where file upload goes
-<input value="Upload CSV" type="file" id="input" onchange="parseFeatures(this.files)">
-
-<select id="featureSelect">
-</select>
-
-<button id="modelButton" onclick="postUserData()">Send it!</button>
-
-
-
-
-
-
-
+	<div>
+		This is where file upload goes
+		<input value="Upload CSV" type="file" id="input" onchange="parseFeatures(this.files)">
+		<select id="featureSelect"></select>
+		<button id="modelButton" onclick="postUserData()">Send it!</button>
+	</div>
+	<div id="modelTrainingResultsSection">
+		<div>
+			<span>Accuracy of Generated Model: </span>
+			<span id="accuracy"></span>
+		</div>
+		<div>
+			<span>Confusion Matrix</span>
+			<div id="confusionMatrix"></div>
+		</div>
+		<div>
+			<span>Classification Report</span>
+			<div id="classificationReport"></div>
+		</div>
+	</div>
 </body>
 </html>

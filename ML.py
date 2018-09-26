@@ -13,7 +13,7 @@ from sklearn.model_selection import cross_val_score
 import sys
 import pandas as pd
 import pickle as pkl
-from bson.binary import Binary
+from bson.binary import Binary #part of pymongo
 import pymongo
 
 def create_model(userData):
@@ -44,7 +44,7 @@ def create_model(userData):
     y_pred = cross_val_predict(model,features,target)
     c_matrix = confusion_matrix(target,y_pred)
     #print(f'Confusion Matrix:\n {c_matrix}')
-    c_report = classification_report(target,y_pred,target_names=headers)
+    c_report = classification_report(target,y_pred)
     #print(f'Classificaiton Report:\n{c_report}')
 
 
@@ -60,14 +60,14 @@ def create_model(userData):
 
     #define the data
     encoded_data = {'model':encoded_list[0],'csv':encoded_list[1],'accuracy':encoded_list[2],'confusion':encoded_list[3],'classifcation':encoded_list[4]}
-    reporting_data = {'accuracy':acc,'confusion':c_matrix,'classifcation':c_report}
+    reporting_data = {'accuracy':acc,'confusion':c_matrix.tolist(),'classification':c_report}
 
 
 
     #insert the data into the runs collection
     mycol.insert_one(encoded_data)
 
-    #return reporting_data
+    return reporting_data
 
 def encode(unencoded_list):
     encoded_list = []

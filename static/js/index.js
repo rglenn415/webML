@@ -19,10 +19,6 @@ function parseFeatures(files){
     });
 };
 
-function onFeatureSelect() {
-
-}
-
 function postUserData() {
     var selector = document.getElementById('featureSelect');
     userData.selectedFeature = selector.options[selector.selectedIndex].value;
@@ -35,7 +31,13 @@ function postUserData() {
         },
         body: JSON.stringify(userData)
     }
-    fetch("/postData", request).then(function(response) {
+    fetch("/postData", request).then(function(data) {
+        return data.json()
+    }).then(function(response) {
         console.log(response);
+        document.getElementById('modelTrainingResultsSection').style.visibility = 'visible';
+        document.getElementById('accuracy').innerHTML = response.accuracy;
+        document.getElementById('confusionMatrix').innerHTML = response.confusion;
+        document.getElementById('classificationReport').innerHTML = response.classification;
     });
 }

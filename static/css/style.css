@@ -1,3 +1,7 @@
 #featureSelect{
     visibility: hidden;
 }
+
+#modelTrainingResultsSection {
+	visibility: hidden;
+}
