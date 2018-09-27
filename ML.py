@@ -18,7 +18,7 @@ import pymongo
 
 def create_model(userData):
     #save csv file with headers still on it for later use
-    csv = userData['file']
+    csv = userData
 
     #pop the column headers
     headers = userData['file'].pop(0)
@@ -28,10 +28,11 @@ def create_model(userData):
 
     #preprocessing
     target = df[selectedFeature]
+
     #drops the selected COLUMN feature from user input
     features = df.drop(selectedFeature, axis =1)
-    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=.2, random_state=7)
 
+    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=.2, random_state=7)
 
     #create and train model
     model = LogisticRegression()
@@ -44,7 +45,7 @@ def create_model(userData):
     y_pred = cross_val_predict(model,features,target)
     c_matrix = confusion_matrix(target,y_pred)
     #print(f'Confusion Matrix:\n {c_matrix}')
-    c_report = classification_report(target,y_pred,target_names=headers)
+    c_report = classification_report(target,y_pred)
     #print(f'Classificaiton Report:\n{c_report}')
 
 
